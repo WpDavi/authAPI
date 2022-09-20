@@ -118,5 +118,42 @@ export const createClaims = async (req: Request, res: Response)=>{
 }
 
 export const readClaims = async (req:Request, res: Response)=>{
+
+    let list = await modelClaims.find();
+    res.json({list})
+}
+
+export const readOneClaims = async (req:Request, res: Response)=>{
+    let id = await req.params._id
     
+    let complaint = await modelClaims.findById(id)
+
+    if(complaint) {
+        res.json({complaint})
+    }else{
+        res.json({error: 'frase nao encontrada'})
+    }
+    
+}
+
+export const changeClaims = async(req: Request, res: Response)=>{
+    const id = req.params._id
+    const { reason, message } = req.body
+    
+    const person = {
+        reason,
+        message
+    }
+
+    try {
+
+        const update = await modelClaims.updateOne({id}, person)
+        res.json({msg: 'mecher nesse codigo amanha'})
+
+        
+    } catch (error) {
+        
+    }
+
+
 }

@@ -9,6 +9,8 @@ const router = Router()
 
  router.post('/claims', auth.createClaims)
  router.get('/claims', auth.readClaims)
+ router.get('/claims/:_id', auth.readOneClaims)
+ router.put('/claims/:_id', auth.changeClaims)
 
 
 export default router;
