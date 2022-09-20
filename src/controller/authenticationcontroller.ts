@@ -117,3 +117,6 @@ export const createClaims = async (req: Request, res: Response)=>{
     
 }
 
+export const readClaims = async (req:Request, res: Response)=>{
+    
+}
