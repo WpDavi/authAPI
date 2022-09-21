@@ -1,15 +1,18 @@
-import exppress, { Request, Response } from 'express'
+import express, { Request, Response } from 'express'
 import dotenv from 'dotenv'
-
+import path from 'path'
 
 import { mongoConnect } from './database/mongo'
 import authRouter from './router/RouterAuthentication'
 
+
 mongoConnect()
 
-const server = exppress()
+const server = express()
 dotenv.config()
-server.use(exppress.json())
+
+server.use(express.static(path.join(__dirname, '../public')));
+server.use(express.json())
 
 server.use(authRouter)
 

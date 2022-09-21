@@ -1,9 +1,11 @@
+import { unlink } from 'fs/promises'
 import { Request, Response } from "express";
 import bcrypt from 'bcrypt'
 import jwt from 'jsonwebtoken'
 import modelUser from '../model/modelUser'
 import modelClaims from '../model/modelClaims'
 import dotenv from 'dotenv'
+import sharp from 'sharp'
 
 dotenv.config()
 
@@ -137,23 +139,53 @@ export const readOneClaims = async (req:Request, res: Response)=>{
 }
 
 export const changeClaims = async(req: Request, res: Response)=>{
-    const id = req.params._id
+    const id = await req.params._id
+
     const { reason, message } = req.body
     
-    const person = {
+    const claims = {
         reason,
         message
     }
 
-    try {
+    if (reason || message) {
+        const update = await modelClaims.updateOne({_id: id}, claims)
+        res.json({msg: 'Reclamação alterada'})
 
-        const update = await modelClaims.updateOne({id}, person)
-        res.json({msg: 'mecher nesse codigo amanha'})
-
-        
-    } catch (error) {
-        
+    } else {
+        res.json({msg: 'Precisa do motivo ou a mensagem para alterar'})
     }
 
+    
 
+
+}
+
+export const deletClaims = async(req:Request, res: Response)=>{
+    const id = await req.params._id
+
+    await modelClaims.remove({_id: id})
+   
+
+    
+}
+
+export const uploadFille = async(req:Request, res: Response)=>{
+    if(req.file){
+        await sharp(req.file.path)
+        .resize(500)
+        .toFormat('jpeg')
+        .toFile(`./public/midia${req.file.filename}.jpg`)   
+        
+        await unlink(req.file.path)
+        
+        
+        res.json({msg: 'Imagem enviada'})
+    }else{
+        res.json({msg: 'arquivo invalido'})
+    }
+
+    
+
+   
 }

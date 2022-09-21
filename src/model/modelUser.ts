@@ -22,14 +22,3 @@ const userModel =
 
 //exportando o model caso ele exista e caso não exista cria ele
 export default userModel;
-
-
-/*const mongoose = require('mongoose')
-const User = mongoose.model('User', {
-    name: String,
-    email: String,
-    password: String
-})
-
-module.exports = User
-*/
